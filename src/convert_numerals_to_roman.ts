@@ -1,76 +1,81 @@
 export class ConvertNumeralsToRoman {
-  private static readonly ROMAN_NUMERALS: Record<number, string>[] = [
-    {
-      1: 'I',
-      5: 'V',
-      10: 'X',
-    },
-    {
-      1: 'X',
-      5: 'L',
-      10: 'C',
-    },
-    {
-      1: 'C',
-      5: 'D',
-      10: 'M',
-    },
+  private static readonly MIN_VALUE: number = 0;
+  private static readonly MAX_VALUE: number = 3999;
+
+  private static readonly ROMAN_NUMERALS: Array<Record<number, string>> = [
+    { 1: 'I', 5: 'V', 10: 'X' },
+    { 1: 'X', 5: 'L', 10: 'C' },
+    { 1: 'C', 5: 'D', 10: 'M' },
+    // Thousands place; only 1 is used (M). Values 5 and 10 are not applicable here
+    { 1: 'M' }
   ];
 
-  static convertFullNumberToRoman(numerals: number): string {
-    this.validateNumber(numerals);
-
-    return this.getRomanNumeralsFromNumber(numerals);
+  static convertFullNumberToRoman(value: number): string {
+    this.validateNumber(value);
+    return this.buildRomanNumeralFromNumber(value);
   }
 
-  private static getRomanNumeralsFromNumber(numerals: number): string {
-    const reversed_string_numerals = numerals.toString().split('').reverse().join('');
-    let roman_numerals = '';
-    for (let i = 0; i < reversed_string_numerals.length; i++) {
-      const roman_numerals_for_digit = this.getRomanNumeralsForDigit(reversed_string_numerals[i], i);
-      roman_numerals = roman_numerals_for_digit + roman_numerals;
+  private static buildRomanNumeralFromNumber(value: number): string {
+    const reversedDigits: string = value.toString().split('').reverse().join('');
+    let result: string = '';
+
+    for (let position = 0; position < reversedDigits.length; position++) {
+      const romanForDigit: string = this.getRomanNumeralsForDigit(reversedDigits[position], position);
+      result = romanForDigit + result;
     }
-    return roman_numerals;
+
+    return result;
   }
 
   private static getRomanNumeralsForDigit(digit: string, position: number): string {
-    const digit_number = parseInt(digit);
+    const digitValue: number = parseInt(digit, 10);
 
-    if (digit_number === 0) {
+    if (digitValue === 0) {
       return '';
     }
-    if (digit_number < 4) {
-      return this.ROMAN_NUMERALS[position][1].repeat(digit_number);
+
+    // Thousands place (position 3) can only be 1-3, represented by 'M' repeated
+    if (position === 3) {
+      return this.ROMAN_NUMERALS[position][1].repeat(digitValue);
     }
-    if (digit_number === 4) {
+
+    if (digitValue < 4) {
+      return this.ROMAN_NUMERALS[position][1].repeat(digitValue);
+    }
+
+    if (digitValue === 4) {
       return this.ROMAN_NUMERALS[position][1] + this.ROMAN_NUMERALS[position][5];
     }
-    if (digit_number === 5) {
+
+    if (digitValue === 5) {
       return this.ROMAN_NUMERALS[position][5];
     }
-    if (digit_number > 5 && digit_number < 9) {
-      return this.ROMAN_NUMERALS[position][5] + this.ROMAN_NUMERALS[position][1].repeat(digit_number - 5);
+
+    if (digitValue > 5 && digitValue < 9) {
+      return this.ROMAN_NUMERALS[position][5] + this.ROMAN_NUMERALS[position][1].repeat(digitValue - 5);
     }
-    if (digit_number === 9) {
+
+    if (digitValue === 9) {
       return this.ROMAN_NUMERALS[position][1] + this.ROMAN_NUMERALS[position][10];
     }
 
+    // Unreachable with valid decimal digits
     throw new Error('Invalid digit');
   }
 
-  private static validateNumber(numerals: number): void {
-    this.validateNumberIsInteger(numerals);
-    this.validateNumberIsBetween0And3999(numerals);
+  private static validateNumber(value: number): void {
+    this.validateNumberIsInteger(value);
+    this.validateNumberIsBetweenMinAndMax(value);
   }
 
-  private static validateNumberIsBetween0And3999(numerals: number): void {
-    if (numerals < 0 || numerals > 3999) {
+  private static validateNumberIsBetweenMinAndMax(value: number): void {
+    if (value < this.MIN_VALUE || value > this.MAX_VALUE) {
       throw new Error('Number must be between 0 and 3999');
     }
   }
 
-  private static validateNumberIsInteger(numerals: number): void {
-    if (!Number.isInteger(numerals)) {
+  private static validateNumberIsInteger(value: number): void {
+    if (!Number.isInteger(value)) {
       throw new Error('Number must be an integer');
     }
   }
