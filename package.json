@@ -1,0 +1,29 @@
+{
+  "name": "cc1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JohnnyJohnnyJohn/fethi_sedjai_CC1_TDD_RomanNumerals.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JohnnyJohnnyJohn/fethi_sedjai_CC1_TDD_RomanNumerals/issues"
+  },
+  "homepage": "https://github.com/JohnnyJohnnyJohn/fethi_sedjai_CC1_TDD_RomanNumerals#readme",
+  "devDependencies": {
+    "@types/node": "^24.9.2",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.12",
+    "vitest": "^4.0.5"
+  }
+}
