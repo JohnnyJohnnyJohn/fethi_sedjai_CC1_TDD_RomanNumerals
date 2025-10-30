@@ -1,22 +1,45 @@
 export class ConvertNumeralsToRoman {
-  private static readonly ROMAN_NUMERALS: Record<number, string> = {
-    0: '',
-    1: 'I',
-    2: 'II',
-    3: 'III',
-    4: 'IV',
-    5: 'V',
-    6: 'VI',
-    7: 'VII',
-    8: 'VIII',
-    9: 'IX',
-    10: 'X',
-  };
+  private static readonly ROMAN_NUMERALS: Record<number, string>[] = [
+    {
+      1: 'I',
+      5: 'V',
+      10: 'X',
+    },
+    {
+      1: 'X',
+      5: 'L',
+      10: 'C',
+    },
+    {
+      1: 'C',
+      5: 'D',
+      10: 'M',
+    },
+  ];
 
   static convert(numerals: number): string {
     this.checkIfNumberIsInteger(numerals);
     this.checkIfNumberIsPositive(numerals);
-    return this.ROMAN_NUMERALS[numerals];
+    const reversed_string_numerals = numerals.toString().split('').reverse().join('');
+    let roman_numerals = '';
+    for (let i = 0; i < reversed_string_numerals.length; i++) {
+      const digit = parseInt(reversed_string_numerals[i]);
+      if (digit === 0) {
+        continue;
+      }
+      if (digit < 4) {
+        roman_numerals = this.ROMAN_NUMERALS[i][1].repeat(digit) + roman_numerals;
+      } else if (digit === 4) {
+        roman_numerals = this.ROMAN_NUMERALS[i][1] + this.ROMAN_NUMERALS[i][5] + roman_numerals;
+      } else if (digit === 5) {
+        roman_numerals = this.ROMAN_NUMERALS[i][5] + roman_numerals;
+      } else if (digit > 5 && digit < 9) {
+        roman_numerals = this.ROMAN_NUMERALS[i][5] + this.ROMAN_NUMERALS[i][1].repeat(digit - 5) + roman_numerals;
+      } else if (digit === 9) {
+        roman_numerals = this.ROMAN_NUMERALS[i][1] + this.ROMAN_NUMERALS[i][10] + roman_numerals;
+      }
+    }
+    return roman_numerals;
   }
 
   private static checkIfNumberIsPositive(numerals: number): void {

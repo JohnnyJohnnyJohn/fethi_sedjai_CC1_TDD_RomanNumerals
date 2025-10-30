@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { ConvertNumeralsToRoman } from '../src/convert_numerals_to_roman';
 
-describe('Conversion of single numerals to roman', () => {
+describe('Check if the number is valid', () => {
   describe('when the number is not an integer', () => {
     it('should return an error', () => {
       expect(() => ConvertNumeralsToRoman.convert(1.5)).toThrow('Number must be an integer');
@@ -12,12 +12,14 @@ describe('Conversion of single numerals to roman', () => {
       expect(() => ConvertNumeralsToRoman.convert(-1)).toThrow('Number must be positive');
     });
   });
+});
+
+describe('Conversion of single numerals to roman', () => {
   describe('when the number is 0', () => {
     it('should return an empty string', () => {
       expect(ConvertNumeralsToRoman.convert(0)).toBe('');
     });
   });
-
   describe('when the number is 1', () => {
     it('should return I', () => {
       expect(ConvertNumeralsToRoman.convert(1)).toBe('I');
@@ -66,9 +68,24 @@ describe('Conversion of single numerals to roman', () => {
 });
 
 describe('Conversion of multiple numerals to roman', () => {
-  describe('when the number is 10', () => {
-    it('should return X', () => {
-      expect(ConvertNumeralsToRoman.convert(10)).toBe('X');
+  describe('when the number is 14', () => {
+    it('should return XIV', () => {
+      expect(ConvertNumeralsToRoman.convert(14)).toBe('XIV');
+    });
+  });
+  describe('when the number is 35', () => {
+    it('should return XXXV', () => {
+      expect(ConvertNumeralsToRoman.convert(35)).toBe('XXXV');
+    });
+  });
+  describe('when the number is 49', () => {
+    it('should return XLIX', () => {
+      expect(ConvertNumeralsToRoman.convert(49)).toBe('XLIX');
+    });
+  });
+  describe('when the number is 99', () => {
+    it('should return XCIX', () => {
+      expect(ConvertNumeralsToRoman.convert(99)).toBe('XCIX');
     });
   });
 });
